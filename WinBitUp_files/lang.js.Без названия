@@ -1,0 +1,21 @@
+const setLang = (language) => {
+    const set_lang_url = '/users/setlanguage'
+    try{
+        fetch(
+            set_lang_url, 
+            { 
+                method: 'POST', 
+                headers: {'Content-Type': 'application/json;charset=utf-8'}, 
+                body: JSON.stringify({lang : language}) 
+            } 
+            )
+            .then(response => response.json())
+            .then((data) => {
+                if( data == true ){
+                    document.location.reload(true);
+                }
+            })
+    } catch (error) {
+        console.error('Ошибка:', error);
+    }
+}

@@ -1,0 +1,156 @@
+const prevSlide = (swiper) => {
+    swiper.slidePrev()
+}
+
+const nextSlide = (swiper) => {
+    swiper.slideNext()
+}
+
+const show = (elem, block_id) => {
+    elem.style = 'display:none'
+    document.querySelector('#'+block_id).classList = 'show'
+}
+
+const showBurger = () => {
+    document.querySelector('burger').classList = 'show'
+}
+
+const hideBurger = () => {
+    document.querySelector('burger').classList = ''
+}
+
+const toggleBurger = () => {
+    document.querySelector('burger').classList.toggle('show')
+}
+
+const toggleDropdown = () => {
+    document.querySelector('#dropdown .menu').classList.toggle('show')
+    document.querySelector('#dropdown .dropdown_m__toggle-arrow').classList.toggle('show')
+}
+
+const copyLink = (inputId, isClass = 0) => {
+    var copyText = document.getElementById(inputId)
+    copyText.select()
+    document.execCommand("copy")
+}
+
+const goTo = ( link, menu_cookie ) => {
+    Cookies.set('menu_cookie', menu_cookie)
+    window.location.replace(link)
+}
+
+const goToTelegram = (tg_url) => {
+    window.open(tg_url, '_blank');
+    fetch('/deposits/tgbonus')
+        .then(response => response.json())
+        .then(data => console.log(data));
+    setTimeout(function(){
+        location.reload();
+        // checkTelegramConfirm()
+    }, 1000)
+}
+
+const goToTelegramChat = (tg_url) => {
+    window.open(tg_url, '_blank');
+    fetch('/deposits/tgchatbonus')
+        .then(response => response.json())
+        .then(data => console.log(data));
+    setTimeout(function(){
+        location.reload();
+        // checkTelegramConfirm()
+    }, 1000)
+}
+
+const goToVK = (vk_url) => {
+    window.open(vk_url, '_blank');
+    fetch('/deposits/vkbonus')
+        .then(response => response.json())
+        .then(data => console.log(data));
+    setTimeout(function(){
+        location.reload();
+        // checkTelegramConfirm()
+    }, 1000)
+}
+
+const getDailyBonus = () => {
+    fetch('/deposits/dailybonus')
+        .then(response => response.json())
+        .then(data => console.log(data));
+    setTimeout(function(){
+        location.reload();
+    }, 1000)
+}
+
+const showBWindow = (b_item_id, site_url, user_id) => {
+    $('#b_code').empty()
+    let code = '<a href="'+site_url+'/r/ref/'+user_id+'"><img src="'+site_url+$('#'+b_item_id+' img').attr('src')+'"/></a>'
+    $('#b_code').val(code)
+    $('#bModal').modal('show')
+}
+
+const getOffset = (el) => {
+    const rect = el.getBoundingClientRect();
+    return {
+        left: rect.left + window.pageXOffset,
+        top: rect.top + window.pageYOffset,
+        width: rect.width || el.offsetWidth,
+        height: rect.height || el.offsetHeight
+    };
+}
+
+const connect = (div1, div2, color, thickness) => {
+
+    $('#steps-line').remove()
+
+    const off1 = getOffset(div1);
+    const off2 = getOffset(div2);
+
+    const x1 = off1.left - 27.5;
+    const y1 = off1.top + 10;
+
+    const x2 = off2.left - 27.5;
+    const y2 = off2.top + 10;
+
+    const length = Math.sqrt(((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1)));
+
+    const cx = ((x1 + x2) / 2) - (length / 2);
+    const cy = ((y1 + y2) / 2) - (thickness / 2);
+
+    const angle = Math.atan2((y1 - y2), (x1 - x2)) * (180 / Math.PI);
+
+    const htmlLine = "<div id='steps-line' style='z-index: 99999; padding:0px; margin:0px; height:" + thickness + "px; background-color:" + color + "; line-height:1px; position:absolute; left:" + cx + "px; top:" + cy + "px; width:" + length + "px; -moz-transform:rotate(" + angle + "deg); -webkit-transform:rotate(" + angle + "deg); -o-transform:rotate(" + angle + "deg); -ms-transform:rotate(" + angle + "deg); transform:rotate(" + angle + "deg);' />";
+    
+    document.body.innerHTML += htmlLine;
+}
+
+$(document).on('ready', function(){
+    if( $(window).width() <= 1199 ){
+    }else{
+        // hideBurger()
+    }
+})
+
+$(window).on('resize', function(){
+    if( $(window).width() <= 1199 ){
+    }else{
+        // hideBurger()
+    }
+})
+
+$(window).on('load', function(){
+    onscroll = (event) => { 
+        if( $(window).scrollTop() > 400 ){
+            $('header').addClass('show')
+        }else{
+            $('header').removeClass('show')
+        }
+    }
+})
+
+function hideBadge($id){
+    $('#'+$id).addClass('d-none')
+    fetch('/bonuses/hidebadge')
+        .then(response => response.json())
+        .then(data => console.log(data));
+}
+
